@@ -1,3 +1,7 @@
 .idea
-node_modules
-yarn.lock
+**/node_modules
+**/build
+**/gradle
+**/.gradle
+**/gradlew
+**/gradlew.bat

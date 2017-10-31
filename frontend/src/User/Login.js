@@ -22,19 +22,13 @@ class Login extends Component {
     }
 
     handleLogin() {
-        this.props.onLoggedIn();
-        //api.login(this.state.username, this.state.password);
+        api.login(this.state.username, this.state.password).then(() => this.props.onLoggedIn());
     }
 
     render() {
         return (
             <div className='container'>
                 <Form id='login-form' horizontal style={{margin: '10%'}}>
-                    <FormGroup>
-                        <Col smOffset={2} sm={10}>
-                            <h2>Willkommen beim Portal für Nachbarschaftsdienste</h2>
-                        </Col>
-                    </FormGroup>
                     <FormGroup>
                         <Col componentClass={ControlLabel} sm={2}>
                             Nutzername
@@ -58,11 +52,6 @@ class Login extends Component {
                     <FormGroup>
                         <Col smOffset={2} sm={10}>
                             <Button bsStyle='primary' onClick={this.handleLogin.bind(this)}>Login</Button>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup>
-                        <Col smOffset={2} sm={10}>
-                            <a>Passwort vergessen?</a>
                         </Col>
                     </FormGroup>
                 </Form>
