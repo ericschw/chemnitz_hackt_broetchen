@@ -49,7 +49,7 @@ public class RootEndpoint {
     public LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
         String sessionId = null;
         try {
-            FileReader fileReader = new FileReader("users.json");
+            FileReader fileReader = new FileReader("db/users.json");
             List<User> users = objectMapper.readValue(fileReader, new TypeReference<List<User>>() {
             });
             for (User user : users) {
@@ -99,12 +99,12 @@ public class RootEndpoint {
             user.address = registrationRequest.address;
 
             try {
-                FileReader fileReader = new FileReader("users.json");
+                FileReader fileReader = new FileReader("db/users.json");
                 List<User> users = objectMapper.readValue(fileReader, new TypeReference<List<User>>() {
                 });
                 users.add(user); // TODO: lock / avoid race conditions
 
-                FileWriter fileWriter = new FileWriter("users.json");
+                FileWriter fileWriter = new FileWriter("db/users.json");
                 objectMapper.writeValue(fileWriter, users);
                 Files.deleteIfExists(invitationFile);
             } catch (IOException e) {
@@ -136,7 +136,7 @@ public class RootEndpoint {
             User user = assertUser(sessionId);
             checkProviderRole(user);
 
-            FileWriter fileWriter = new FileWriter("products.json");
+            FileWriter fileWriter = new FileWriter("db/products.json");
             objectMapper.writeValue(fileWriter, request.products);
 
         } catch (IOException e) {
@@ -150,7 +150,7 @@ public class RootEndpoint {
             String sessionId = getSessionId(servletRequest);
             assertUser(sessionId);
 
-            FileReader fileReader = new FileReader("products.json");
+            FileReader fileReader = new FileReader("db/products.json");
             return objectMapper.readValue(fileReader, new TypeReference<List<Product>>() {
             });
         } catch (IOException e) {
@@ -167,8 +167,17 @@ public class RootEndpoint {
         checkProviderRole(user);
         orders.forEach(order -> addUserDataToOrder(order, user));
         try {
-            FileWriter fileWriter = new FileWriter("orders-" + user.login + ".json");
-            objectMapper.writeValue(fileWriter, orders);
+
+            List<Order> toBeSaved = new ArrayList<>(orders);
+            Path userOrdersFile = Paths.get("db/orders-" + user.login + ".json");
+            if (Files.exists(userOrdersFile)) {
+                FileReader fileReader = new FileReader(userOrdersFile.toFile());
+                List<Order> userOrders = objectMapper.readValue(fileReader, new TypeReference<List<Order>>() {
+                });
+                toBeSaved.addAll(userOrders);
+            }
+            FileWriter fileWriter = new FileWriter("db/orders-" + user.login + ".json");
+            objectMapper.writeValue(fileWriter, toBeSaved);
         } catch (IOException e) {
             LOGGER.error("Could not store orders for user " + user.login, e);
         }
@@ -180,7 +189,7 @@ public class RootEndpoint {
         assertUser(sessionId);
 
         List<Order> orders = new ArrayList<>();
-        try (DirectoryStream<Path> paths = Files.newDirectoryStream(Paths.get("."))) {
+        try (DirectoryStream<Path> paths = Files.newDirectoryStream(Paths.get("db/"))) {
             for (Path path : paths) {
                 String filename = path.getFileName().toString();
                 if (filename.startsWith("orders-")) {
