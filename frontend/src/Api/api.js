@@ -52,6 +52,10 @@ class Api {
         });
     }
 
+    saveProducts(products) {
+        return this.post('/products', {products});
+    }
+
     post(url, body) {
         return this.request(url, 'post', body);
     }

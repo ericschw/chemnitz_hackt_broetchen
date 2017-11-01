@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import OrderList from './OrderList';
 import {Tabs, Tab} from 'react-bootstrap';
+import PriceList from "./PriceList";
 
 
 class ServiceProvider extends Component {
@@ -12,7 +13,7 @@ class ServiceProvider extends Component {
                     <OrderList/>
                 </Tab>
                 <Tab eventKey={2} title='Preisliste'>
-                    ...
+                    <PriceList />
                 </Tab>
             </Tabs>
         );
