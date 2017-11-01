@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import DeliverySettings from './DeliverySettings';
-import OrderItems from './OrderItems';
+import ProductAmountList from './ProductAmountList';
 import {Button} from 'react-bootstrap';
 import api from '../Api/api';
 
-class Order extends Component {
+class PlaceOrder extends Component {
 
     handleDeliverySettingsChange(date, deliveryType) {
         this.date = date;
@@ -20,18 +20,18 @@ class Order extends Component {
     }
 
     render() {
-        this.date = Order.getToday();
+        this.date = PlaceOrder.getToday();
         return (
             <div className='container'>
                 <DeliverySettings  initialDate={this.date} onChange={this.handleDeliverySettingsChange.bind(this)} />
-                <OrderItems onChange={this.handleProductsChange.bind(this)} />
+                <ProductAmountList onChange={this.handleProductsChange.bind(this)} />
                 <Button bsStyle='success' onClick={this.handleOrder.bind(this)} >Jetzt bestellen</Button>
             </div>
         );
     }
 }
 
-Order.getToday = () => {
+PlaceOrder.getToday = () => {
     const today = new Date();
     let dd = today.getDate();
     let mm = today.getMonth() + 1;
@@ -46,4 +46,4 @@ Order.getToday = () => {
     return yyyy+'-'+mm+'-'+dd;
 };
 
-export default Order;
+export default PlaceOrder;

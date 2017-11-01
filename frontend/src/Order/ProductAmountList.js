@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {FormControl, Table} from 'react-bootstrap';
 import api from '../Api/api';
 
-class OrderItems extends Component {
+class ProductAmountList extends Component {
 
     constructor(props) {
         super(props);
@@ -59,4 +59,4 @@ class OrderItems extends Component {
     }
 }
 
-export default OrderItems;
+export default ProductAmountList;
