@@ -7,4 +7,4 @@
 **/gradlew.bat
 **/out
 npm-debug.log
-**/db
+api/db

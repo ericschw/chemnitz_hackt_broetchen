@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Table} from 'react-bootstrap';
+import {Panel, Table} from 'react-bootstrap';
 import api from '../Api/api';
 
 class OrderList extends Component {
@@ -27,7 +27,7 @@ class OrderList extends Component {
                 {
                     this.state.orders.map(order => {
                         return (<div>
-                            <h3>{order.customer}, {order.date} ({order.address}, {order.deliveryType})</h3>
+                            <Panel header={'Kunde: ' + order.customer + ', Datum: ' + order.date + ', Adresse: ' + order.address + ', Lieferart: ' + order.deliveryType}>
                             <Table striped bordered>
                                 <thead>
                                 <tr>
@@ -52,7 +52,8 @@ class OrderList extends Component {
                                 }
                                 </tbody>
                             </Table>
-                        </div>)
+                        </Panel>
+                    </div>)
                     })
                 }
             </div>);
