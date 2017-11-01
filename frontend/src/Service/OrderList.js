@@ -27,7 +27,7 @@ class OrderList extends Component {
                 {
                     this.state.orders.map(order => {
                         return (<div>
-                            <h3>{order.customer}, am {order.date} ({order.address}, {order.deliveryType})</h3>
+                            <h3>{order.customer}, {order.date} ({order.address}, {order.deliveryType})</h3>
                             <Table striped bordered>
                                 <thead>
                                 <tr>
