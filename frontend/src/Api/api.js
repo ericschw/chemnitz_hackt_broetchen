@@ -18,7 +18,7 @@ class Api {
             .then(response => {
                 if (response.status === 200) {
 
-                    return new Promise((resolve, reject) => {
+                    return new Promise((resolve) => {
                         response.json()
                             .then(response => {
                                 this.sessionId = response.sessionId;
@@ -56,6 +56,10 @@ class Api {
 
     saveProducts(products) {
         return this.post('/products', {products});
+    }
+
+    getMe() {
+        return this.get('/users/me').then(response => response.json());
     }
 
     post(url, body) {
