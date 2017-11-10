@@ -22,7 +22,11 @@ class Login extends Component {
     }
 
     handleLogin() {
-        api.login(this.state.username, this.state.password).then(() => this.props.onLoggedIn());
+        const { username, password } = this.state;
+        api.login(username, password).then(
+            () => this.props.onLoggedIn(),
+            () => this.props.onLoginFailed()
+        );
     }
 
     render() {

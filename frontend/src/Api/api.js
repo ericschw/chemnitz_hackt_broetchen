@@ -1,7 +1,6 @@
 class Api {
 
     baseUrl = 'http://localhost:8080/api';
-    loggedIn = false;
 
     login(username, password) {
         return fetch(this.baseUrl + '/login',
@@ -18,13 +17,16 @@ class Api {
             })
             .then(response => {
                 if (response.status === 200) {
-                    return response.json()
-                        .then(response => {
-                            this.sessionId = response.sessionId;
-                            console.log('Session ' + this.sessionId);
-                        });
+
+                    return new Promise((resolve, reject) => {
+                        response.json()
+                            .then(response => {
+                                this.sessionId = response.sessionId;
+                                resolve();
+                            });
+                    });
                 } else {
-                    this.loggedIn = false;
+                    return new Promise((resolve, reject) => reject());
                 }
             });
     }

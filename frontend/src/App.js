@@ -18,6 +18,10 @@ class App extends Component {
         this.setState({loggedIn: true});
     }
 
+    handleLoginFailed() {
+        console.log('Login failed');
+    }
+
     render() {
         return (
             <div className="App">
@@ -26,7 +30,10 @@ class App extends Component {
                         <Header/>
                         <Main/>
 
-                    </div>) : <Login onLoggedIn={this.handleLoggedIn.bind(this)} />
+                    </div>) : <Login
+                                    onLoggedIn={this.handleLoggedIn.bind(this)}
+                                    onLoginFailed={this.handleLoginFailed.bind(this)}
+                                />
                 }
             </div>
         );
