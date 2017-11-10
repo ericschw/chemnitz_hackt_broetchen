@@ -42,8 +42,8 @@ class Api {
         });
     }
 
-    fetchOrders() {
-        return this.post('/orders/_search', {}).then(response => {
+    fetchOrders(fromDate, toDate) {
+        return this.post('/orders/_search', {fromDate, toDate}).then(response => {
             return response.json();
         });
     }

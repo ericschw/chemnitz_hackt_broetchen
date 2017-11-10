@@ -3,6 +3,7 @@ import DeliverySettings from './DeliverySettings';
 import ProductAmountList from './ProductAmountList';
 import {Button} from 'react-bootstrap';
 import api from '../Api/api';
+import {today} from '../Util/dateUtil';
 
 class PlaceOrder extends Component {
 
@@ -20,7 +21,7 @@ class PlaceOrder extends Component {
     }
 
     render() {
-        this.date = PlaceOrder.getToday();
+        this.date = today();
         return (
             <div className='container'>
                 <DeliverySettings  initialDate={this.date} onChange={this.handleDeliverySettingsChange.bind(this)} />
@@ -30,20 +31,5 @@ class PlaceOrder extends Component {
         );
     }
 }
-
-PlaceOrder.getToday = () => {
-    const today = new Date();
-    let dd = today.getDate();
-    let mm = today.getMonth() + 1;
-
-    const yyyy = today.getFullYear();
-    if( dd < 10){
-        dd='0'+dd;
-    }
-    if(mm<10){
-        mm='0'+mm;
-    }
-    return yyyy+'-'+mm+'-'+dd;
-};
 
 export default PlaceOrder;
