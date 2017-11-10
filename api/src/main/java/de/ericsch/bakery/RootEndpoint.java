@@ -212,6 +212,7 @@ public class RootEndpoint {
         } catch (IOException e) {
             LOGGER.error("Could not access orders", e);
         }
+        orders.sort(Comparator.comparing(order -> order.date));
         return orders;
     }
 
