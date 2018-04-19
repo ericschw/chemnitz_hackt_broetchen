@@ -48,23 +48,27 @@ public class RootEndpoint {
     @PostMapping(path = "login")
     public LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
         String sessionId = null;
-        try {
-            FileReader fileReader = new FileReader("db/users.json");
-            List<User> users = objectMapper.readValue(fileReader, new TypeReference<List<User>>() {
-            });
-            for (User user : users) {
-                if (Objects.equals(request.username, user.login) && Objects.equals(request.password, user.password)) {
-                    sessionId = UUID.randomUUID().toString();
-                    usersBySessionId.put(sessionId, user);
-                }
+        List<User> users = loadUsers();
+        for (User user : users) {
+            if (Objects.equals(request.username, user.login) && Objects.equals(request.password, user.password)) {
+                sessionId = UUID.randomUUID().toString();
+                usersBySessionId.put(sessionId, user);
             }
-        } catch (IOException e) {
-            LOGGER.error("Could not read users.");
         }
         if (sessionId == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
         }
         return new LoginResponse(sessionId);
+    }
+
+    private List<User> loadUsers() {
+        try (FileReader fileReader = new FileReader("db/users.json")) {
+            return objectMapper.readValue(fileReader, new TypeReference<List<User>>() {
+            });
+        } catch (IOException e) {
+            LOGGER.error("Could not load users.");
+        }
+        return Collections.emptyList();
     }
 
     @Value("${apiUrl}")
@@ -126,6 +130,29 @@ public class RootEndpoint {
         result.address = user.address;
         result.isProvider = user.isProvider;
         return result;
+    }
+
+    @PostMapping(path = "users/me")
+    public void saveMe(@RequestBody User toBeSaved, HttpServletRequest servletRequest) {
+        String sessionId = getSessionId(servletRequest);
+        User user = assertUser(sessionId);
+        user.fullName = toBeSaved.fullName;
+        user.address = toBeSaved.address;
+
+        List<User> users = loadUsers();
+        for (int i = 0; i < users.size(); i++) {
+            User candidate = users.get(i);
+            if (candidate.login.equals(user.login)) {
+                users.set(i, user);
+                break;
+            }
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("db/users.json");
+            objectMapper.writeValue(fileWriter, users);
+        } catch (IOException e) {
+            LOGGER.error("Could not write users", e);
+        }
     }
 
     @PostMapping(path = "products")

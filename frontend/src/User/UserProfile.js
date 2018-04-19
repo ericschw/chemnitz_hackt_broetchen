@@ -1,43 +1,36 @@
 import React, {Component} from 'react';
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
+import api from '../Api/api';
 
 class UserProfile extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            firstname: '',
-            lastname: '',
-            street: '',
-            number: '',
-            zipCode: '',
-            city: '',
+            login: '',
+            fullName: '',
+            address: '',
         };
     }
 
-    handleFirstnameChange(e) {
-        this.setState({firstname: e.target.value});
+    componentDidMount() {
+        api.getMe().then(user => {
+            const { login, fullName, address } = user;
+            this.setState({login, fullName, address});
+        });
     }
 
-    handleLastnameChange(e) {
-        this.setState({lastname: e.target.value});
+    handleFullNameChange(e) {
+        this.setState({fullName: e.target.value});
     }
 
-    handleStreetChange(e) {
-        this.setState({street: e.target.value});
+    handleAddressChange(e) {
+        this.setState({address: e.target.value});
     }
 
-    handleNumberChange(e) {
-        this.setState({number: e.target.value});
-    }
-
-    handleZipCodeChange(e) {
-        this.setState({zipCode: e.target.value});
-    }
-
-    handleCityChange(e) {
-        this.setState({city: e.target.value});
+    handleSave(e) {
+        const {fullName, address} = this.state;
+        api.saveMe({fullName, address});
     }
 
     render() {
@@ -48,15 +41,7 @@ class UserProfile extends Component {
                         Benutzername
                     </Col>
                     <Col sm={10}>
-                        <FormControl disabled={true} type='text' value={this.state.username} />
-                    </Col>
-                </FormGroup>
-                <FormGroup>
-                    <Col sm={2} componentClass={ControlLabel}>
-                        Vorname
-                    </Col>
-                    <Col sm={10}>
-                        <FormControl type='text' value={this.state.firstname} onChange={this.handleFirstnameChange.bind(this)}  />
+                        <FormControl disabled={true} type='text' value={this.state.login} />
                     </Col>
                 </FormGroup>
                 <FormGroup>
@@ -64,7 +49,7 @@ class UserProfile extends Component {
                         Name
                     </Col>
                     <Col sm={10}>
-                        <FormControl type='text' value={this.state.lastname} onChange={this.handleLastnameChange.bind(this)} />
+                        <FormControl type='text' value={this.state.fullName} onChange={this.handleFullNameChange.bind(this)}  />
                     </Col>
                 </FormGroup>
                 <FormGroup>
@@ -72,36 +57,12 @@ class UserProfile extends Component {
                         Straße
                     </Col>
                     <Col sm={10}>
-                        <FormControl type='text' value={this.state.street} onChange={this.handleStreetChange.bind(this)} />
-                    </Col>
-                </FormGroup>
-                <FormGroup>
-                    <Col sm={2} componentClass={ControlLabel}>
-                        Hausnummer
-                    </Col>
-                    <Col sm={10}>
-                        <FormControl type='text' value={this.state.number} onChange={this.handleNumberChange.bind(this)} />
-                    </Col>
-                </FormGroup>
-                <FormGroup>
-                    <Col sm={2} componentClass={ControlLabel}>
-                        PLZ
-                    </Col>
-                    <Col sm={10}>
-                        <FormControl type='text' value={this.state.zipCode} onChange={this.handleZipCodeChange.bind(this)} />
-                    </Col>
-                </FormGroup>
-                <FormGroup>
-                    <Col sm={2} componentClass={ControlLabel}>
-                        Ort
-                    </Col>
-                    <Col sm={10}>
-                        <FormControl type='text' value={this.state.city} onChange={this.handleCityChange.bind(this)} />
+                        <FormControl type='text' value={this.state.address} onChange={this.handleAddressChange.bind(this)} />
                     </Col>
                 </FormGroup>
                 <FormGroup>
                     <Col>
-                        <Button bsStyle='primary'>Speichern</Button>
+                        <Button bsStyle='primary' onClick={this.handleSave.bind(this)} >Speichern</Button>
                     </Col>
                 </FormGroup>
             </Form>

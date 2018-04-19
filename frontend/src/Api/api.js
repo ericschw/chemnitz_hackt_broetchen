@@ -62,6 +62,10 @@ class Api {
         return this.get('/users/me').then(response => response.json());
     }
 
+    saveMe(user) {
+        return this.post('/users/me', user);
+    }
+
     post(url, body) {
         return this.request(url, 'post', body);
     }
