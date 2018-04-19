@@ -6,7 +6,7 @@ import {today} from '../Util/dateUtil';
 class OrderList extends Component {
 
     static calcTotal(product) {
-        const amount = parseInt(product.amount);
+        const amount = parseInt(product.amount, 10);
         return amount * product.price;
     }
 

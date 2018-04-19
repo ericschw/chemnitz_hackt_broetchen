@@ -18,13 +18,13 @@ class ProductAmountList extends Component {
     handleAmountChange(product, e) {
         const products = this.state.products.slice();
         const index = products.indexOf(product);
-        products[index].amount = parseInt(e.target.value);
+        products[index].amount = parseInt(e.target.value, 10);
         this.setState({products});
         this.props.onChange(products);
     }
 
     calcTotal(product) {
-        const amount = parseInt(product.amount);
+        const amount = parseInt(product.amount, 10);
         return amount * product.price;
     }
 
