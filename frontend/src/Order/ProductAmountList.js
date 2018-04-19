@@ -46,9 +46,9 @@ class ProductAmountList extends Component {
                             <tr key={product.name}>
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
-                                <td><FormControl type='number' value={product.amount}
+                                <td><FormControl type='number' value={product.amount || 0}
                                                  onChange={this.handleAmountChange.bind(this, product)}/></td>
-                                <td>{this.calcTotal(product)}</td>
+                                <td>{String(this.calcTotal(product))}</td>
                             </tr>
                         );
                     })
