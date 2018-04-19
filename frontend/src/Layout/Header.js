@@ -16,7 +16,6 @@ class Header extends Component {
     }
 
     render() {
-        console.log(api.getMe());
         return (
             <Nav bsStyle='pills'>
                 <NavItem href='#/'>Bestellen</NavItem>
