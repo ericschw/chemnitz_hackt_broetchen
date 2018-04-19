@@ -75,7 +75,6 @@ class PriceList extends Component {
                         );
                     })
                 }
-                </tbody>
                 <tr>
                     <td><FormControl type='text' value={this.state.productPrototype.name} onChange={this.handleProductPrototypeNameChange.bind(this)} /></td>
                     <td><FormControl type='number' step='0.01' value={this.state.productPrototype.price} onChange={this.handleProductPrototypePriceChange.bind(this)} /></td>
@@ -86,6 +85,7 @@ class PriceList extends Component {
                         <Button bsStyle='primary' onClick={this.handleSave.bind(this)}>Speichern</Button>
                     </td>
                 </tr>
+                </tbody>
             </Table>
         );
     }
