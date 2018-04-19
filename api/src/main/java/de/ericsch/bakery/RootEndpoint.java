@@ -191,7 +191,6 @@ public class RootEndpoint {
         Collection<Order> orders = placeOrderRequest.orders;
         String sessionId = getSessionId(servletRequest);
         User user = assertUser(sessionId);
-        checkProviderRole(user);
         orders.forEach(order -> addUserDataToOrder(order, user));
         try {
 
